@@ -1,7 +1,8 @@
 package com.example.my_project.exception_handler;
 
+import com.example.my_project.exception.NotFoundException;
 import com.example.my_project.exception.RegistrationException;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
+import com.example.my_project.exception.UniqueBrandException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -37,6 +38,33 @@ public class GlobalExceptionHandler  {
         message.put("message",error);
         return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String,Object>>runtime(RuntimeException e){
+        Map<String,Object>error = new HashMap<>();
+
+        error.put("message",e.getMessage());
+        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Map<String,Object>>notFoundException(NotFoundException e){
+        Map<String,Object>message = new HashMap<>();
+        message.put("time",new Date().toString());
+        message.put("message",e.getMessage());
+        message.put("status",HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(message,HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UniqueBrandException.class)
+    public ResponseEntity<Map<String,Object>>uniqueBrandException(UniqueBrandException e){
+        Map<String,Object>message = new HashMap<>();
+        message.put("time",new Date().toString());
+        message.put("message",e.getMessage());
+        message.put("status",HttpStatus.CONFLICT);
+        return new ResponseEntity<>(message,HttpStatus.CONFLICT);
+    }
+
 
 
 

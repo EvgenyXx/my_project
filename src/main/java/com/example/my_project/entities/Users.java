@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -29,6 +31,18 @@ public class Users {
     private String email;
 
     private BigDecimal purse;
+
+    private LocalDate birthday;
+
+    private Integer age;
+
+    private String passport;
+
+    @OneToMany(mappedBy = "users")
+    private List<Orders> orders;
+
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
 
    
 }
